@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
-import type { Application, Company, ApplicationStatus } from "@/lib/types";
+import type { Application, ApplicationStatus } from "@/lib/types";
 import { toast } from "sonner";
 import { prettifyApiError } from "@/lib/notify";
 
@@ -48,39 +48,28 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
     const router = useRouter();
 
 
-    // const [companies, setCompanies] = useState<Company[]>([]);
-    // const [loadingCompanies, setLoadingCompanies] = useState(false);
+
     const [saving, setSaving] = useState(false);
 
     // Form state
-    const [companyId, setCompanyId] = useState("");
-    const [roleTitle, setRoleTitle] = useState("");
+    const [company, setCompanyId] = useState("");
+    const [role, setRoleTitle] = useState("");
     const [status, setStatus] = useState<ApplicationStatus>("DRAFT");
     const [source, setSource] = useState("");
     const [jobUrl, setJobUrl] = useState("");
     const [notesBrief, setNotesBrief] = useState("");
+    const [applied_date, setAppliedDate] = useState("");
+    const [next_date, setNextDate] = useState("");
 
-    // Load companies when dialog opens
-    // useEffect(() => {
-    //     if (!open) return;
-    //     (async () => {
-    //         try {
-    //             setLoadingCompanies(true);
-    //             const list = await api.listCompanies();
-    //             setCompanies(list);
-    //         } finally {
-    //             setLoadingCompanies(false);
-    //         }
-    //     })();
-    // }, [open]);
+
 
     // Init fields for edit/create
     useEffect(() => {
         if (!open) return;
 
         if (mode === "edit" && initial) {
-            setCompanyId(String(initial.company?.id ?? ""));
-            setRoleTitle(initial.role_title || "");
+            setCompanyId(initial.company || "");
+            setRoleTitle(initial.role || "");
             setStatus(initial.status);
             setSource(initial.source || "");
             setJobUrl(initial.job_url || "");
@@ -98,8 +87,8 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
     }, [open, mode, initial]);
 
     const canSubmit = useMemo(() => {
-        return Boolean(companyId) && roleTitle.trim().length > 0 && !saving;
-    }, [companyId, roleTitle, saving]);
+        return Boolean(company) && role.trim().length > 0 && !saving;
+    }, [company, role, saving]);
 
     async function onSubmit() {
         if (!canSubmit) return;
@@ -109,23 +98,27 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
 
             if (mode === "create") {
                 await api.createApplication({
-                    company_id: Number(companyId),
-                    role_title: roleTitle.trim(),
+                    company: company.trim(),
+                    role: role.trim(),
                     status,
                     source: source || null,
                     job_url: jobUrl || null,
                     notes_brief: notesBrief || null,
+                    applied_date: applied_date || null,
+                    next_date: next_date || null,
                 });
                 toast.success("Application created successfully");
             } else {
                 if (!initial) return;
                 await api.patchApplication(initial.id, {
-                    company_id: Number(companyId),
-                    role_title: roleTitle.trim(),
+                    company: company.trim(),
+                    role: role.trim(),
                     status,
                     source: source || null,
                     job_url: jobUrl || null,
                     notes_brief: notesBrief || null,
+                    applied_date: applied_date || null,
+                    next_date: next_date || null,
                 });
                 toast.success("Application updated successfully");
             }
@@ -150,30 +143,41 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <Label>Company</Label>
-                        <Input value={companyId} onChange={(e) => setCompanyId(e.target.value)} placeholder="e.g. AWS" />
-                        {/* <Select
-                            value={companyId}
-                            onValueChange={setCompanyId}
-                            disabled={loadingCompanies}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder={loadingCompanies ? "Loading..." : "Select a company"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {companies.map((c) => (
-                                    <SelectItem key={c.id} value={String(c.id)}>
-                                        {c.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select> */}
+                        <Input value={company} onChange={(e) => setCompanyId(e.target.value)} placeholder="e.g. AWS" />
+
 
                     </div>
 
                     <div className="space-y-2">
                         <Label>Role Title</Label>
-                        <Input value={roleTitle} onChange={(e) => setRoleTitle(e.target.value)} placeholder="e.g. Full Stack Developer" />
+                        <Input value={role} onChange={(e) => setRoleTitle(e.target.value)} placeholder="e.g. Full Stack Developer" />
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Applied Date</label>
+                            <input
+                                type="date"
+                                value={applied_date || ""}
+                                onChange={(e) =>
+                                    setAppliedDate(e.target.value)
+                                }
+                                className="w-full rounded-md border px-3 py-2"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium">Next Date</label>
+                            <input
+                                type="date"
+                                value={next_date || ""}
+                                onChange={(e) =>
+                                    setNextDate(e.target.value)
+                                }
+                                className="w-full rounded-md border px-3 py-2"
+                            />
+                        </div>
+                    </div>
+
 
                     <div className="space-y-2">
                         <Label>Status</Label>

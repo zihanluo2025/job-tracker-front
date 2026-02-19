@@ -18,9 +18,9 @@ export type Company = {
 
 export type Application = {
   id: number;
-  company: Company;
+  company: string;
 
-  role_title: string;
+  role: string;
   status: ApplicationStatus;
 
   source?: string | null;
@@ -31,5 +31,7 @@ export type Application = {
   jd_url?: string | null;
   jd_text?: string | null;
   jd_updated_at?: string | null;
+  next_date?: string | null; // ISO string
+
 };
 

@@ -24,28 +24,35 @@ export default function ApplicationTable({ data }: { data: Application[] }) {
 
             <Card className="p-4">
                 <div className="grid grid-cols-12 text-sm font-medium pb-2 border-b">
-                    <div className="col-span-4">Role</div>
                     <div className="col-span-3">Company</div>
-                    <div className="col-span-2">Status</div>
-                    <div className="col-span-2">Applied</div>
+                    <div className="col-span-4">Role</div>
+
+                    <div className="col-span-1">Status</div>
+                    <div className="col-span-1">Applied</div>
+                    <div className="col-span-1">Next</div>
                     <div className="col-span-1 text-right">Actions</div>
                 </div>
 
                 <div className="divide-y">
                     {data.map((a) => (
+
                         <div key={a.id} className="grid grid-cols-12 py-3 text-sm px-2 items-center">
+                            <div className="col-span-3">{a.company}</div>
                             <Link href={`/applications/${a.id}`} className="col-span-4 font-medium hover:underline">
-                                {a.role_title}
+                                {a.role}
                             </Link>
 
-                            <div className="col-span-3">{a.company?.name}</div>
 
-                            <div className="col-span-2">
+
+                            <div className="col-span-1">
                                 <Badge variant="secondary">{a.status}</Badge>
                             </div>
 
-                            <div className="col-span-2">
+                            <div className="col-span-1">
                                 {a.applied_date ? new Date(a.applied_date).toLocaleDateString() : "-"}
+                            </div>
+                            <div className="col-span-1">
+                                {a.next_date ? new Date(a.next_date).toLocaleDateString() : "-"}
                             </div>
 
                             <div className="col-span-1 flex justify-end gap-2">
