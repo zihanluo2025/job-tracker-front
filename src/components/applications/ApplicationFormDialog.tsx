@@ -48,12 +48,12 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
     const router = useRouter();
 
 
-    const [companies, setCompanies] = useState<Company[]>([]);
-    const [loadingCompanies, setLoadingCompanies] = useState(false);
+    // const [companies, setCompanies] = useState<Company[]>([]);
+    // const [loadingCompanies, setLoadingCompanies] = useState(false);
     const [saving, setSaving] = useState(false);
 
     // Form state
-    const [companyId, setCompanyId] = useState<string>("");
+    const [companyId, setCompanyId] = useState("");
     const [roleTitle, setRoleTitle] = useState("");
     const [status, setStatus] = useState<ApplicationStatus>("DRAFT");
     const [source, setSource] = useState("");
@@ -61,18 +61,18 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
     const [notesBrief, setNotesBrief] = useState("");
 
     // Load companies when dialog opens
-    useEffect(() => {
-        if (!open) return;
-        (async () => {
-            try {
-                setLoadingCompanies(true);
-                const list = await api.listCompanies();
-                setCompanies(list);
-            } finally {
-                setLoadingCompanies(false);
-            }
-        })();
-    }, [open]);
+    // useEffect(() => {
+    //     if (!open) return;
+    //     (async () => {
+    //         try {
+    //             setLoadingCompanies(true);
+    //             const list = await api.listCompanies();
+    //             setCompanies(list);
+    //         } finally {
+    //             setLoadingCompanies(false);
+    //         }
+    //     })();
+    // }, [open]);
 
     // Init fields for edit/create
     useEffect(() => {
@@ -150,7 +150,8 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <Label>Company</Label>
-                        <Select
+                        <Input value={companyId} onChange={(e) => setCompanyId(e.target.value)} placeholder="e.g. AWS" />
+                        {/* <Select
                             value={companyId}
                             onValueChange={setCompanyId}
                             disabled={loadingCompanies}
@@ -165,12 +166,8 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
                                     </SelectItem>
                                 ))}
                             </SelectContent>
-                        </Select>
-                        {!companies.length && !loadingCompanies ? (
-                            <p className="text-xs text-muted-foreground">
-                                No companies yet. 先在后端创建公司（或我下一步带你做 Company CRUD）。
-                            </p>
-                        ) : null}
+                        </Select> */}
+
                     </div>
 
                     <div className="space-y-2">
