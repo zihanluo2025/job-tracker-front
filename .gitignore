@@ -1,0 +1,14 @@
+# 忽略前后端依赖和构建产物
+node_modules/
+dist/
+build/
+
+# 忽略环境变量
+.env
+.env.local
+
+# 忽略日志
+npm-debug.log
+.DS_Store
+
+.vscode/
