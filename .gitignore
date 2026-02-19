@@ -6,9 +6,13 @@ build/
 # 忽略环境变量
 .env
 .env.local
+.env.*.local
 
 # 忽略日志
 npm-debug.log
 .DS_Store
 
 .vscode/
+.next/
+out/
+
