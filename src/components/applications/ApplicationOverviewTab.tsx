@@ -31,7 +31,7 @@ export default function ApplicationOverviewTab({
     const [status, setStatus] = useState<ApplicationStatus>(app.status);
     const [source, setSource] = useState(app.source || "");
     const [jobUrl, setJobUrl] = useState(app.job_url || "");
-    const [appliedDate, setAppliedDate] = useState(toDateInputValue(app.applied_date));
+    const [applied_date, setapplied_date] = useState(toDateInputValue(app.applied_date));
     const [notesBrief, setNotesBrief] = useState(app.notes_brief || "");
 
     const hasChanges = useMemo(() => {
@@ -40,16 +40,16 @@ export default function ApplicationOverviewTab({
             status !== app.status ||
             source !== (app.source || "") ||
             jobUrl !== (app.job_url || "") ||
-            appliedDate !== originalDate ||
+            applied_date !== originalDate ||
             notesBrief !== (app.notes_brief || "")
         );
-    }, [app, status, source, jobUrl, appliedDate, notesBrief]);
+    }, [app, status, source, jobUrl, applied_date, notesBrief]);
 
     function resetDraft() {
         setStatus(app.status);
         setSource(app.source || "");
         setJobUrl(app.job_url || "");
-        setAppliedDate(toDateInputValue(app.applied_date));
+        setapplied_date(toDateInputValue(app.applied_date));
         setNotesBrief(app.notes_brief || "");
     }
 
@@ -58,13 +58,13 @@ export default function ApplicationOverviewTab({
             setSaving(true);
 
             // Convert date input (YYYY-MM-DD) -> ISO string (UTC midnight)
-            const appliedDateIso = appliedDate ? new Date(`${appliedDate}T00:00:00.000Z`).toISOString() : null;
+            const applied_dateIso = applied_date ? new Date(`${applied_date}T00:00:00.000Z`).toISOString() : null;
 
             const updated = await api.patchApplication(app.id, {
                 status,
                 source: source || null,
                 job_url: jobUrl || null,
-                applied_date: appliedDateIso,
+                applied_date: applied_dateIso,
                 notes_brief: notesBrief || null,
             });
 
@@ -138,8 +138,8 @@ export default function ApplicationOverviewTab({
                         {isEditing ? (
                             <Input
                                 type="date"
-                                value={appliedDate}
-                                onChange={(e) => setAppliedDate(e.target.value)}
+                                value={applied_date}
+                                onChange={(e) => setapplied_date(e.target.value)}
                             />
                         ) : (
                             <div className="text-sm">

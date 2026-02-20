@@ -49,7 +49,7 @@ export default function ApplicationTable({ data }: { data: Application[] }) {
                             </div>
 
                             <div className="col-span-1">
-                                {a.appliedDate ? new Date(a.appliedDate).toLocaleDateString() : "-"}
+                                {a.applied_date ? new Date(a.applied_date).toLocaleDateString() : "-"}
                             </div>
                             <div className="col-span-1">
                                 {a.nextDate ? new Date(a.nextDate).toLocaleDateString() : "-"}

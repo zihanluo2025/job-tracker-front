@@ -22,7 +22,7 @@ export type Application = {
   source?: string | null;
   job_url?: string | null;
   applied_date?: string | null; // ISO string
-  appliedDate: string | null; // ISO string, for backward compatibility
+  applied_date: string | null; // ISO string, for backward compatibility
   notes_brief?: string | null;
 
   jd_url?: string | null;

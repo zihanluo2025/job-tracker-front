@@ -58,7 +58,7 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
     const [source, setSource] = useState("");
     const [jobUrl, setJobUrl] = useState("");
     const [notesBrief, setNotesBrief] = useState("");
-    const [applied_date, setAppliedDate] = useState("");
+    const [applied_date, setapplied_date] = useState("");
     const [next_date, setNextDate] = useState("");
 
 
@@ -159,7 +159,7 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
                                 type="date"
                                 value={applied_date || ""}
                                 onChange={(e) =>
-                                    setAppliedDate(e.target.value)
+                                    setapplied_date(e.target.value)
                                 }
                                 className="w-full rounded-md border px-3 py-2"
                             />
