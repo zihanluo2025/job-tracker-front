@@ -13,9 +13,9 @@ export default function ApplicationDetail({ initial }: { initial: Application })
     return (
         <div className="space-y-4">
             <div>
-                <div className="text-2xl font-semibold">{app.role_title}</div>
+                <div className="text-2xl font-semibold">{app.role}</div>
                 <div className="text-sm text-muted-foreground flex items-center gap-2">
-                    <span>{app.company?.name}</span>
+                    <span>{app.company}</span>
                     <Badge variant="secondary">{app.status}</Badge>
                 </div>
             </div>

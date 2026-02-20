@@ -8,11 +8,7 @@ export type ApplicationStatus =
   | "REJECTED"
   | "WITHDRAWN";
 
-export type Company = {
-  id: number;
-  name: string;
-  website?: string | null;
-};
+
 
 
 
@@ -26,12 +22,14 @@ export type Application = {
   source?: string | null;
   job_url?: string | null;
   applied_date?: string | null; // ISO string
+  appliedDate: string | null; // ISO string, for backward compatibility
   notes_brief?: string | null;
 
   jd_url?: string | null;
   jd_text?: string | null;
   jd_updated_at?: string | null;
   next_date?: string | null; // ISO string
+  nextDate: string | null; // ISO string, for backward compatibility
 
 };
 

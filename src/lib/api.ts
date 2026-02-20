@@ -1,4 +1,4 @@
-import type { Application, Company } from "@/lib/types";
+import type { Application } from "@/lib/types";
 
 
 
@@ -64,7 +64,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
 
 export const api = {
   // --- Companies ---
-  listCompanies: () => request<Company[]>(`/companies`),
+  // listCompanies: () => request<Company[]>(`/companies`),
 
   // --- Applications ---
   listApplications: async (params?: Record<string, string>) => {
@@ -79,7 +79,7 @@ export const api = {
     request<Application>(`/applications/${id}`),
 
   createApplication: (payload: {
-    company: number;
+    company: string;
     role: string;
     status: string;
     source?: string | null;
@@ -97,7 +97,7 @@ export const api = {
 
   patchApplication: (
     id: string | number,
-    payload: Partial<Application> & { company_id?: number }
+    payload: Partial<Application> & { company?: string }
   ) =>
     request<Application>(`/applications/${id}`, {
       method: "PATCH",

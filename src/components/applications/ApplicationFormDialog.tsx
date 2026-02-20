@@ -87,7 +87,7 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
     }, [open, mode, initial]);
 
     const canSubmit = useMemo(() => {
-        return Boolean(company) && role.trim().length > 0 && !saving;
+        return company.trim().length > 0 && role.trim().length > 0 && !saving;
     }, [company, role, saving]);
 
     async function onSubmit() {

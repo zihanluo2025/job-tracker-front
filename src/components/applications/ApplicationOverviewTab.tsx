@@ -102,8 +102,8 @@ export default function ApplicationOverviewTab({
             <Card className="p-4 space-y-3">
                 <div className="flex items-start justify-between gap-3">
                     <div>
-                        <div className="text-lg font-semibold">{app.role_title}</div>
-                        <div className="text-sm text-muted-foreground">{app.company?.name}</div>
+                        <div className="text-lg font-semibold">{app.role}</div>
+                        <div className="text-sm text-muted-foreground">{app.company}</div>
                     </div>
 
                     <div className="flex items-center gap-2">
