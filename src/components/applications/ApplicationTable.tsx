@@ -52,7 +52,7 @@ export default function ApplicationTable({ data }: { data: Application[] }) {
                                 {a.applied_date ? new Date(a.applied_date).toLocaleDateString() : "-"}
                             </div>
                             <div className="col-span-1">
-                                {a.nextDate ? new Date(a.nextDate).toLocaleDateString() : "-"}
+                                {a.next_date ? new Date(a.next_date).toLocaleDateString() : "-"}
                             </div>
 
                             <div className="col-span-1 flex justify-end gap-2">
