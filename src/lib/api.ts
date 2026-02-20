@@ -1,6 +1,6 @@
 import type { Application, Company } from "@/lib/types";
 
-console.log("NEXT_PUBLIC_API_BASE =", process.env.NEXT_PUBLIC_API_BASE_URL);
+
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
@@ -39,7 +39,7 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     cache: "no-store",
   });
 
-  console.log(res, "res", "API_BASE", API_BASE, "path", path);
+
 
   // Handle non-2xx
   if (!res.ok) {
