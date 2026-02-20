@@ -197,7 +197,7 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label>Source</Label>
+                            <Label>Location</Label>
                             <Input value={source} onChange={(e) => setSource(e.target.value)} placeholder="LinkedIn / Seek / Referral" />
                         </div>
                         <div className="space-y-2">

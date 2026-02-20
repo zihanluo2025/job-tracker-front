@@ -28,7 +28,9 @@ export default function ApplicationTable({ data }: { data: Application[] }) {
                     <div className="col-span-4">Role</div>
 
                     <div className="col-span-1">Status</div>
+                    <div className="col-span-1">Location</div>
                     <div className="col-span-1">Applied</div>
+
                     <div className="col-span-1">Next</div>
                     <div className="col-span-1 text-right">Actions</div>
                 </div>
@@ -46,6 +48,9 @@ export default function ApplicationTable({ data }: { data: Application[] }) {
 
                             <div className="col-span-1">
                                 <Badge variant="secondary">{a.status}</Badge>
+                            </div>
+                            <div className="col-span-1">
+                                {a.source || "-"}
                             </div>
 
                             <div className="col-span-1">
