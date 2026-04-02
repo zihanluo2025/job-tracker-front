@@ -1,5 +1,4 @@
 import { api } from "@/lib/api";
-import ApplicationTable from "@/components/applications/ApplicationTable";
 
 function getStatusCount(apps: Array<{ status?: string | null }>, target: string) {
   return apps.filter((item) => (item.status || "").toUpperCase() === target).length;
@@ -77,7 +76,7 @@ export default async function ApplicationsPage() {
             </div>
           </div>
 
-          <ApplicationTable data={apps} />
+
         </div>
 
       </section>
