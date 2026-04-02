@@ -15,6 +15,9 @@ Unlike traditional CRUD applications, this system adopts a **serverless architec
 This project demonstrates my ability to build **production-ready full-stack systems with cloud-native design principles**.
 
 ---
+<img width="2880" height="1558" alt="image" src="https://github.com/user-attachments/assets/6414da62-3528-459b-a4cc-6aeb1d56d7a1" />
+
+
 
 ## 🎯 Key Features
 
@@ -99,3 +102,6 @@ cd job-tracker-front
 ---
 
 ## 🏗️ System Architecture
+
+<img width="1680" height="1118" alt="image" src="https://github.com/user-attachments/assets/e0394198-9de5-452d-aa12-6db0b6e3b062" />
+
