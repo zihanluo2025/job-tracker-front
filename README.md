@@ -1,6 +1,6 @@
-# 🚀 Job Tracker – AI-Powered Career Management Platform
+# Job Tracker – AI-Powered Career Management Platform
 
-## 📌 Overview
+## Overview
 
 ### onlinie : https://jobtracker.luozihan.space/
 
@@ -21,33 +21,33 @@ This project demonstrates my ability to build **production-ready full-stack syst
 
 
 
-## 🎯 Key Features
+## Key Features
 
-### 🧩 Job Application Management
+### Job Application Management
 - Create, update, delete job applications  
 - Track status: Applied / Interview / Offer / Rejected  
 - Structured data management  
 
-### 📊 Analytics Dashboard
+### Analytics Dashboard
 - Visual insights into job search progress  
 - Application success tracking  
 - Data-driven decision making  
 
-### 🤖 AI Resume Analyzer
+### AI Resume Analyzer
 - Resume vs Job Description matching  
 - Skill gap analysis  
 - Intelligent suggestions  
 
-### 🔐 Authentication
+### Authentication
 - Secure API communication  
 - Token-based authentication
 
 
 ---
 
-## ☁️ Cloud Architecture (AWS)
+## Cloud Architecture (AWS)
 
-### 🌐 Frontend – AWS Amplify
+### Frontend – AWS Amplify
 - Hosting Next.js application  
 - Automatic CI/CD from GitHub  
 - Integrated with custom domain (Route 53)  
@@ -57,19 +57,19 @@ This project demonstrates my ability to build **production-ready full-stack syst
 - Auto-scaling based on traffic  
 - Cost-efficient execution  
 
-### 🚪 API Layer – API Gateway
+### API Layer – API Gateway
 - HTTP API routing  
 - Handles request/response lifecycle  
 - CORS & security configuration  
 
-### 🗄️ Database
+### Database
 - DynamoDB (NoSQL, scalable)  
 or  
 - PostgreSQL (relational)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - Next.js 14 (App Router)
@@ -93,7 +93,7 @@ or
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone Repository
 
@@ -103,6 +103,6 @@ cd job-tracker-front
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 
