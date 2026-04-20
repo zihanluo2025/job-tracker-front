@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 import {
     LayoutDashboard,
     BriefcaseBusiness,
-    BarChart3,
-    Settings,
+    // BarChart3,
+    // Settings,
 } from "lucide-react";
 import clsx from "clsx";
 
 const navItems = [
     { label: "Dashboard", href: "/", icon: LayoutDashboard },
     { label: "Applications", href: "/applications", icon: BriefcaseBusiness },
-    { label: "Analytics", href: "/analytics", icon: BarChart3 },
-    { label: "Settings", href: "/settings", icon: Settings },
+    // { label: "Analytics", href: "/analytics", icon: BarChart3 },
+    // { label: "Settings", href: "/settings", icon: Settings },
 ];
 
 export default function AppSidebar() {
