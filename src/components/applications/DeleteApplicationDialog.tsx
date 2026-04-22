@@ -19,11 +19,14 @@ import {
     AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 
-export default function DeleteApplicationDialog({ appId }: { appId: number }) {
+type DeleteApplicationDialogProps = {
+    appId: string | number;
+    onDeleted?: (appId: string | number) => void;
+};
+
+export default function DeleteApplicationDialog({ appId, onDeleted }: DeleteApplicationDialogProps) {
     const router = useRouter();
     const [deleting, setDeleting] = useState(false);
-
-
 
     async function onDelete() {
         try {
@@ -31,7 +34,7 @@ export default function DeleteApplicationDialog({ appId }: { appId: number }) {
             await api.deleteApplication(appId);
 
             toast.success("Application deleted successfully");
-
+            onDeleted?.(appId);
             router.refresh();
         } catch (e) {
             toast.error(prettifyApiError(e));

@@ -1,17 +1,30 @@
 import { api } from "@/lib/api";
 
-function getStatusCount(apps: Array<{ status?: string | null }>, target: string) {
-  return apps.filter((item) => (item.status || "").toUpperCase() === target).length;
+function normalizeStatus(status?: string | null) {
+  return (status || "").trim().toUpperCase();
+}
+
+function getStatusCount(apps: Array<{ status?: string | null }>, targets: string[]) {
+  const normalizedTargets = targets.map((item) => item.toUpperCase());
+  return apps.filter((item) => normalizedTargets.includes(normalizeStatus(item.status))).length;
 }
 
 export default async function ApplicationsPage() {
-  const apps = await api.listApplications();
+  // 这里为了让 dashboard 的统计卡片拿到全量数据，
+  // 先一次性请求一个较大的 limit。
+  // 如果你后续数据可能超过 1000，建议改成专门的 stats 接口。
+  const res = await api.listApplications({
+    limit: "1000",
+    page: "1",
+  });
 
-  const totalCount = apps.length;
-  const appliedCount = getStatusCount(apps, "APPLIED");
-  const pendingCount = getStatusCount(apps, "PENDING");
-  const interviewCount = getStatusCount(apps, "INTERVIEW");
-  const rejectedCount = getStatusCount(apps, "REJECTED");
+  const apps = res.items;
+
+  const totalCount = res.totalCount;
+  const appliedCount = getStatusCount(apps, ["APPLIED"]);
+  const pendingCount = getStatusCount(apps, ["PENDING"]);
+  const interviewCount = getStatusCount(apps, ["INTERVIEW", "INTERVIEWING"]);
+  const rejectedCount = getStatusCount(apps, ["REJECTED", "CLOSED"]);
 
   return (
     <div className="space-y-8">
@@ -63,7 +76,7 @@ export default async function ApplicationsPage() {
       </section>
 
       {/* Main content */}
-      <section className=" w-full">
+      <section className="w-full">
         <div className="min-w-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-sm md:p-6">
           <div className="mb-4 flex items-center justify-between">
             <div>
@@ -75,10 +88,7 @@ export default async function ApplicationsPage() {
               </p>
             </div>
           </div>
-
-
         </div>
-
       </section>
     </div>
   );

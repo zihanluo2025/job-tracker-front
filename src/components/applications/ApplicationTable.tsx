@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, MoreVertical } from "lucide-react";
+import { useMemo } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { ApplicationTabKey } from "@/app/(app)/applications/page";
+import DeleteApplicationDialog from "@/components/applications/DeleteApplicationDialog";
 
 type ApplicationItem = {
     id: string | number;
@@ -14,6 +15,7 @@ type ApplicationItem = {
     location?: string | null;
     applied?: string | null;
     appliedDate?: string | null;
+    applied_date?: string | null;
     next?: string | null;
     logoUrl?: string | null;
 };
@@ -23,9 +25,15 @@ type Props = {
     tabKey: ApplicationTabKey;
     loading?: boolean;
     onRefresh?: () => void;
-};
+    onDeleted?: (appId: string | number) => void;
+    onEdit?: (item: ApplicationItem) => void;
 
-const PAGE_SIZE = 4;
+    currentPage: number;
+    totalPages: number;
+    totalCount: number;
+    onPrevPage: () => void;
+    onNextPage: () => void;
+};
 
 function normalizeStatus(status?: string | null) {
     return (status || "").trim().toUpperCase();
@@ -78,14 +86,17 @@ export default function ApplicationTable({
     data,
     tabKey,
     loading = false,
+    onRefresh,
+    onDeleted,
+    onEdit,
+    currentPage,
+    totalPages,
+    totalCount,
+    onPrevPage,
+    onNextPage,
 }: Props) {
-    const [page, setPage] = useState(1);
-
-    useEffect(() => {
-        setPage(1);
-    }, [tabKey]);
-
     const filteredData = useMemo(() => {
+        // 这里保留兼容逻辑，但正常情况下后端已经按 tab 过滤了
         if (tabKey === "ALL") return data;
 
         if (tabKey === "APPLIED") {
@@ -108,18 +119,6 @@ export default function ApplicationTable({
 
         return data;
     }, [data, tabKey]);
-
-    const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
-    const start = (page - 1) * PAGE_SIZE;
-    const pagedData = filteredData.slice(start, start + PAGE_SIZE);
-
-    function prevPage() {
-        setPage((p) => Math.max(1, p - 1));
-    }
-
-    function nextPage() {
-        setPage((p) => Math.min(totalPages, p + 1));
-    }
 
     if (loading) {
         return (
@@ -150,16 +149,18 @@ export default function ApplicationTable({
             </div>
 
             <div className="space-y-4">
-                {pagedData.length === 0 ? (
+                {filteredData.length === 0 ? (
                     <div className="rounded-[20px] bg-white px-6 py-10 text-center text-sm text-slate-500">
                         No applications found.
                     </div>
                 ) : (
-                    pagedData.map((item) => {
+                    filteredData.map((item) => {
                         const company = item.company || item.companyName || "Unknown Company";
                         const role = item.role || item.jobTitle || "Unknown Role";
                         const status = mapStatus(item.status);
-                        const appliedDate = formatDate(item.applied || item.appliedDate);
+                        const appliedDate = formatDate(
+                            item.applied_date || item.appliedDate || item.applied
+                        );
 
                         return (
                             <div
@@ -197,10 +198,22 @@ export default function ApplicationTable({
                                     {appliedDate}
                                 </div>
 
-                                <div className="flex items-center justify-end">
-                                    <button className="rounded-xl p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700">
-                                        <MoreVertical className="h-5 w-5" />
+                                <div className="flex items-center justify-end gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => onEdit?.(item)}
+                                        className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:bg-slate-100"
+                                    >
+                                        Edit
                                     </button>
+
+                                    <DeleteApplicationDialog
+                                        appId={item.id}
+                                        onDeleted={(id) => {
+                                            onDeleted?.(id);
+                                            onRefresh?.();
+                                        }}
+                                    />
                                 </div>
                             </div>
                         );
@@ -210,42 +223,26 @@ export default function ApplicationTable({
 
             <div className="mt-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <p className="text-sm italic text-slate-400">
-                    Viewing {pagedData.length} of {filteredData.length} applications
+                    Page {currentPage} of {totalPages} · Showing {filteredData.length} of {totalCount} applications
                 </p>
 
                 <div className="flex items-center gap-2">
                     <button
-                        onClick={prevPage}
+                        onClick={onPrevPage}
                         className="rounded-xl p-2 text-slate-400 transition hover:bg-white hover:text-slate-700 disabled:opacity-40"
-                        disabled={page === 1}
+                        disabled={currentPage === 1}
                     >
                         <ChevronLeft className="h-4 w-4" />
                     </button>
 
-                    {Array.from({ length: totalPages }).map((_, index) => {
-                        const pageNumber = index + 1;
-                        const active = pageNumber === page;
-
-                        return (
-                            <button
-                                key={pageNumber}
-                                onClick={() => setPage(pageNumber)}
-                                className={[
-                                    "h-9 min-w-9 rounded-xl px-3 text-sm font-semibold transition",
-                                    active
-                                        ? "bg-white text-[#4a66d6] shadow-sm"
-                                        : "text-slate-400 hover:bg-white hover:text-slate-700",
-                                ].join(" ")}
-                            >
-                                {pageNumber}
-                            </button>
-                        );
-                    })}
+                    <button className="h-9 min-w-9 rounded-xl bg-white px-3 text-sm font-semibold text-[#4a66d6] shadow-sm">
+                        {currentPage}
+                    </button>
 
                     <button
-                        onClick={nextPage}
+                        onClick={onNextPage}
                         className="rounded-xl p-2 text-slate-400 transition hover:bg-white hover:text-slate-700 disabled:opacity-40"
-                        disabled={page === totalPages}
+                        disabled={currentPage >= totalPages}
                     >
                         <ChevronRight className="h-4 w-4" />
                     </button>

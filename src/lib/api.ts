@@ -1,33 +1,21 @@
 import type { Application } from "@/lib/types";
 
-
-
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
-/**
- * request<T>
- * - GET/HEAD: do NOT send Content-Type (avoid triggering CORS preflight)
- * - POST/PUT/PATCH: if body exists and Content-Type not set, set to application/json
- * - merge user-provided init.headers
- */
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   const method = (init.method || "GET").toUpperCase();
 
-  // Merge headers safely
   const headers = new Headers(init.headers);
 
-  // Detect whether request has a body
   const hasBody =
     init.body !== undefined &&
     init.body !== null &&
     !(typeof init.body === "string" && init.body.length === 0);
 
-  // Only set JSON content-type when we actually send a body
   if (hasBody && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
 
-  // Force remove content-type for GET/HEAD to avoid preflight
   if (method === "GET" || method === "HEAD") {
     headers.delete("Content-Type");
   }
@@ -39,48 +27,48 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
     cache: "no-store",
   });
 
-
-
-  // Handle non-2xx
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(text || `Request failed: ${res.status}`);
   }
 
-  // Handle 204 No Content (e.g. DELETE)
   if (res.status === 204) {
     return undefined as T;
   }
 
-  // Some APIs may return empty body with 200/201 as well
   const text = await res.text().catch(() => "");
   if (!text) {
     return undefined as T;
   }
 
-  // Parse JSON
   return JSON.parse(text) as T;
 }
 
-export const api = {
-  // --- Companies ---
-  // listCompanies: () => request<Company[]>(`/companies`),
+export type ListApplicationsResponse = {
+  ok: boolean;
+  items: Application[];
+  pageSize: number;
+  currentPage: number;
+  returnedCount: number;
+  totalCount: number;
+  totalPages: number;
+};
 
-  // --- Applications ---
+export const api = {
   listApplications: async (params?: Record<string, string>) => {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
-    const res = await request<{ ok: boolean; items: Application[] }>(
-      `/applications${qs}`
-    );
-    return res.items;
+    return request<ListApplicationsResponse>(`/applications${qs}`);
   },
 
-  getApplication: (id: string | number) =>
-    request<Application>(`/applications/${id}`),
+  getApplication: async (id: string | number) => {
+    const res = await request<{ ok: boolean; item: Application }>(`/applications/${id}`);
+    return res.item;
+  },
 
-  createApplication: (payload: {
+  createApplication: async (payload: {
     company: string;
     role: string;
+    job_title?: string | null;
     status: string;
     source?: string | null;
     job_url?: string | null;
@@ -89,20 +77,48 @@ export const api = {
     notes_brief?: string | null;
     jd_url?: string | null;
     jd_text?: string | null;
-  }) =>
-    request<Application>(`/applications`, {
-      method: "POST",
-      body: JSON.stringify(payload),
-    }),
+  }) => {
+    const body = {
+      company: payload.company,
+      role: payload.role,
+      status: payload.status,
+      source: payload.source ?? "",
+      job_url: payload.job_url ?? null,
+      applied_date: payload.applied_date ?? null,
+      next_date: payload.next_date ?? null,
+      note: payload.notes_brief ?? "",
+    };
 
-  patchApplication: (
+    const res = await request<{ ok: boolean; item: Application }>(`/applications`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    return res.item;
+  },
+
+  patchApplication: async (
     id: string | number,
-    payload: Partial<Application> & { company?: string }
-  ) =>
-    request<Application>(`/applications/${id}`, {
+    payload: Partial<Application> & {
+      company?: string;
+      role?: string;
+      notes_brief?: string | null;
+    }
+  ) => {
+    const body: Record<string, unknown> = { ...payload };
+
+    if ("notes_brief" in body) {
+      body.note = body.notes_brief;
+      delete body.notes_brief;
+    }
+
+    const res = await request<{ ok: boolean; item: Application }>(`/applications/${id}`, {
       method: "PATCH",
-      body: JSON.stringify(payload),
-    }),
+      body: JSON.stringify(body),
+    });
+
+    return res.item;
+  },
 
   deleteApplication: (id: string | number) =>
     request<void>(`/applications/${id}`, { method: "DELETE" }),

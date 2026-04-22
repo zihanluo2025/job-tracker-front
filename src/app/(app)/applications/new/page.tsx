@@ -48,9 +48,10 @@ export default function ApplicationsPage() {
     const [editingApp, setEditingApp] = useState<ApplicationItem | null>(null);
     const [editOpen, setEditOpen] = useState(false);
 
-    const [page, setPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
-    const [totalPages, setTotalPages] = useState(1);
+    const [nextCursor, setNextCursor] = useState<string | null>(null);
+    const [cursorStack, setCursorStack] = useState<(string | null)[]>([null]);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         resetAndLoad();
@@ -68,13 +69,12 @@ export default function ApplicationsPage() {
         return undefined;
     }
 
-    async function loadApplications(targetPage = 1) {
+    async function loadApplications(cursor?: string | null) {
         try {
             setLoading(true);
 
             const params: Record<string, string> = {
                 limit: String(PAGE_SIZE),
-                page: String(targetPage),
             };
 
             const status = mapTabToStatus(activeTab);
@@ -86,33 +86,49 @@ export default function ApplicationsPage() {
                 params.company = searchTerm.trim();
             }
 
+            if (cursor) {
+                params.cursor = cursor;
+            }
+
             const res = await api.listApplications(params);
 
             setApps(res.items);
-            setPage(res.currentPage);
             setTotalCount(res.totalCount);
-            setTotalPages(res.totalPages);
+            setNextCursor(res.nextCursor);
         } finally {
             setLoading(false);
         }
     }
 
     async function resetAndLoad() {
-        await loadApplications(1);
+        setPage(1);
+        setCursorStack([null]);
+        await loadApplications(null);
     }
 
     async function handleSearch() {
-        await loadApplications(1);
+        setPage(1);
+        setCursorStack([null]);
+        await loadApplications(null);
     }
 
     async function handlePrevPage() {
-        if (page <= 1) return;
-        await loadApplications(page - 1);
+        if (page === 1) return;
+
+        const prevPage = page - 1;
+        const prevCursor = cursorStack[prevPage - 1] ?? null;
+
+        setPage(prevPage);
+        await loadApplications(prevCursor);
     }
 
     async function handleNextPage() {
-        if (page >= totalPages) return;
-        await loadApplications(page + 1);
+        if (!nextCursor) return;
+
+        const newStack = [...cursorStack, nextCursor];
+        setCursorStack(newStack);
+        setPage((p) => p + 1);
+        await loadApplications(nextCursor);
     }
 
     function handleApplicationDeleted(appId: string | number) {
@@ -137,6 +153,8 @@ export default function ApplicationsPage() {
             return status === "REJECTED" || status === "CLOSED";
         }).length;
     }, [apps]);
+
+    const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
     return (
         <div className="space-y-8">
@@ -221,6 +239,8 @@ export default function ApplicationsPage() {
                     currentPage={page}
                     totalPages={totalPages}
                     totalCount={totalCount}
+                    pageSize={PAGE_SIZE}
+                    hasNextPage={Boolean(nextCursor)}
                     onPrevPage={handlePrevPage}
                     onNextPage={handleNextPage}
                     onRefresh={resetAndLoad}

@@ -37,11 +37,30 @@ const STATUS_OPTIONS: ApplicationStatus[] = [
     "WITHDRAWN",
 ];
 
+type FormInitial =
+    | Application
+    | {
+        id?: string | number;
+        company?: string | null;
+        role?: string | null;
+        status?: string | null;
+        source?: string | null;
+        job_url?: string | null;
+        notes_brief?: string | null;
+        applied_date?: string | null;
+        next_date?: string | null;
+        companyName?: string | null;
+        jobTitle?: string | null;
+        applied?: string | null;
+        appliedDate?: string | null;
+        next?: string | null;
+    };
+
 type Props = {
     open: boolean;
     onOpenChange: (v: boolean) => void;
     mode: "create" | "edit";
-    initial?: Application; // required for edit
+    initial?: FormInitial;
 };
 
 export default function ApplicationFormDialog({ open, onOpenChange, mode, initial }: Props) {
@@ -70,10 +89,14 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
         if (mode === "edit" && initial) {
             setCompanyId(initial.company || "");
             setRoleTitle(initial.role || "");
-            setStatus(initial.status);
+            setStatus((initial.status as ApplicationStatus) ?? "DRAFT");
             setSource(initial.source || "");
             setJobUrl(initial.job_url || "");
             setNotesBrief(initial.notes_brief || "");
+            setapplied_date(
+                (initial as any).applied_date || (initial as any).applied || ""
+            );
+            setNextDate((initial as any).next_date || (initial as any).next || "");
         }
 
         if (mode === "create") {
@@ -100,6 +123,7 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
                 await api.createApplication({
                     company: company.trim(),
                     role: role.trim(),
+                    job_title: role.trim() || null,
                     status,
                     source: source || null,
                     job_url: jobUrl || null,
@@ -109,7 +133,7 @@ export default function ApplicationFormDialog({ open, onOpenChange, mode, initia
                 });
                 toast.success("Application created successfully");
             } else {
-                if (!initial) return;
+                if (!initial || initial.id === undefined || initial.id === null) return;
                 await api.patchApplication(initial.id, {
                     company: company.trim(),
                     role: role.trim(),
