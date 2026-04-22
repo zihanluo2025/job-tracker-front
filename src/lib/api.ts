@@ -73,6 +73,7 @@ export const api = {
     source?: string | null;
     job_url?: string | null;
     applied_date?: string | null;
+    location?: string | null;
     next_date?: string | null;
     notes_brief?: string | null;
     jd_url?: string | null;
@@ -83,6 +84,7 @@ export const api = {
       role: payload.role,
       status: payload.status,
       source: payload.source ?? "",
+      location: payload.location ?? null,
       job_url: payload.job_url ?? null,
       applied_date: payload.applied_date ?? null,
       next_date: payload.next_date ?? null,
@@ -103,6 +105,8 @@ export const api = {
       company?: string;
       role?: string;
       notes_brief?: string | null;
+      location?: string | null;
+      
     }
   ) => {
     const body: Record<string, unknown> = { ...payload };

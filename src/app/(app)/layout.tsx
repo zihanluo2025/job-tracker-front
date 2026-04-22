@@ -17,9 +17,9 @@ export default function DashboardLayout({
                 {/* Right side */}
                 <div className="flex min-w-0 flex-1 flex-col">
                     {/* Fixed header */}
-                    <div className="shrink-0">
+                    {/* <div className="shrink-0">
                         <AppHeader />
-                    </div>
+                    </div> */}
 
                     {/* Scrollable content only */}
                     <main className="min-h-0 flex-1 overflow-y-auto p-8">

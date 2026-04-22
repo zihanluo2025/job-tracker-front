@@ -83,7 +83,7 @@ export default function ApplicationsPage() {
             }
 
             if (searchTerm.trim()) {
-                params.company = searchTerm.trim();
+                params.q = searchTerm.trim();
             }
 
             const res = await api.listApplications(params);
@@ -139,81 +139,76 @@ export default function ApplicationsPage() {
     }, [apps]);
 
     return (
-        <div className="space-y-8">
-            <section className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
-                <div>
-                    <h1 className="text-[44px] font-extrabold leading-none tracking-tight text-slate-900">
-                        Applications
-                    </h1>
+        <div className="space-y-6">
+            <section className="space-y-5">
+                <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-end">
+                    <div className="relative min-w-0 flex-1 lg:max-w-[520px]">
+                        <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                        <Input
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    handleSearch();
+                                }
+                            }}
+                            placeholder="Search applications, roles, or companies..."
+                            className="h-12 rounded-2xl border border-[#D9E4F2] bg-[#DFF2FF] pl-11 pr-4 text-sm text-slate-700 placeholder:text-slate-400"
+                        />
+                    </div>
 
-                    <div className="mt-3 flex flex-wrap items-center gap-3">
-                        <span className="rounded-full bg-[#97e28c] px-4 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#346d2a]">
-                            {activeInterviewCount} Active Interviews
-                        </span>
-
-                        <span className="text-sm font-medium text-slate-500">
-                            Total of {totalCount} applications submitted
-                        </span>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={newApplication}
+                            className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#1652C8] px-6 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(22,82,200,0.22)] transition hover:bg-[#1245A8]"
+                        >
+                            <Plus className="h-4 w-4" />
+                            Add New
+                        </button>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={newApplication}
-                        className="inline-flex items-center gap-2 rounded-2xl bg-[#1652c8] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1245a8]"
-                    >
-                        <Plus className="h-4 w-4" />
-                        Add New
-                    </button>
+                <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+                    <div className="min-w-0">
+                        <h1 className="text-[46px] font-extrabold leading-none tracking-tight text-slate-900">
+                            Applications
+                        </h1>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-3">
+                            <span className="rounded-full bg-[#B8F0A8] px-4 py-1 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#2E7D32]">
+                                {activeInterviewCount} Active Interviews
+                            </span>
+
+                            <span className="text-sm font-medium text-slate-500">
+                                Total of {totalCount} applications submitted
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex w-full flex-wrap items-center gap-2 rounded-2xl bg-[#DFF2FF] p-2 xl:w-auto">
+                        {tabs.map((tab) => {
+                            const active = activeTab === tab.key;
+
+                            return (
+                                <button
+                                    key={tab.key}
+                                    onClick={() => setActiveTab(tab.key)}
+                                    className={[
+                                        "rounded-xl px-8 py-3 text-sm font-bold tracking-[0.08em] transition",
+                                        active
+                                            ? "bg-white text-[#255FD5] shadow-sm"
+                                            : "text-slate-500 hover:text-slate-900",
+                                    ].join(" ")}
+                                >
+                                    {tab.label}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
-            <section className="rounded-[12px] bg-[#eaf7ff] p-5 shadow-sm md:p-6">
-                <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="grid w-full gap-3 md:w-auto md:grid-cols-[minmax(0,1fr)_auto]">
-                        <div className="flex items-center gap-1 rounded-2xl bg-[#eef7ff] p-1">
-                            {tabs.map((tab) => {
-                                const active = activeTab === tab.key;
-
-                                return (
-                                    <button
-                                        key={tab.key}
-                                        onClick={() => setActiveTab(tab.key)}
-                                        className={[
-                                            "rounded-xl px-5 py-2 text-xs font-bold tracking-[0.08em] transition",
-                                            active
-                                                ? "bg-white text-[#4a66d6] shadow-sm"
-                                                : "text-slate-500 hover:text-slate-900",
-                                        ].join(" ")}
-                                    >
-                                        {tab.label}
-                                    </button>
-                                );
-                            })}
-                        </div>
-
-                        <div className="relative flex items-center rounded-2xl border border-slate-200 bg-white px-4 py-2 shadow-sm">
-                            <Search className="h-4 w-4 text-slate-400" />
-                            <Input
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        handleSearch();
-                                    }
-                                }}
-                                placeholder="Search company"
-                                className="border-0 bg-transparent px-3 py-0 text-sm text-slate-700 placeholder:text-slate-400 focus:ring-0"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 text-sm text-slate-500">
-                        <span>Applied: {appliedCount}</span>
-                        <span>Closed: {closedCount}</span>
-                    </div>
-                </div>
-
+            <section className="rounded-[12px] border border-[#E6ECF5] bg-[#EAF7FF] p-5 shadow-[0_6px_18px_rgba(15,23,42,0.04)] md:p-6">
                 <ApplicationTable
                     data={apps}
                     tabKey={activeTab}
