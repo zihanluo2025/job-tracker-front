@@ -97,20 +97,26 @@ export default function WeeklyApplicationsChart({ apps }: Props) {
     }, [apps, currentWeekStart, currentWeekEnd]);
 
     const totalThisWeek = chartData.reduce((sum, item) => sum + item.count, 0);
-    const isCurrentWeek = weekOffset === 0;
+    // const isCurrentWeek = weekOffset === 0;
 
     return (
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
             <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                        Weekly Applications
-                    </p>
-                    <h3 className="mt-2 text-xl font-semibold text-slate-900">
-                        {/* <p className="mt-2 text-sm text-[#64748B]"> */}
-                        {totalThisWeek} applications this week
-                        {/* </p> */}
-                    </h3>
+
+
+
+                    <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94A3B8]">
+                            Applications Amount
+                        </p>
+                        <h3 className="mt-2 text-2xl font-semibold text-[#0F172A]">
+                            Daily Distribution
+                        </h3>
+                        <p className="mt-1 text-sm text-[#64748B]">
+                            {totalThisWeek} applications in this week
+                        </p>
+                    </div>
 
                 </div>
 

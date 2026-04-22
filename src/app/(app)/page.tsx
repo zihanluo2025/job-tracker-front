@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import WeeklyApplicationsChart from "@/components/applications/WeeklyApplicationsChart";
-
+import WeeklyLocationPieChart from "@/components/applications/WeeklyLocationPieChart";
 function normalizeStatus(status?: string | null) {
   return (status || "").trim().toUpperCase();
 }
@@ -71,7 +71,11 @@ export default async function ApplicationsPage() {
         </div>
       </section>
 
-      <WeeklyApplicationsChart apps={apps} />
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <WeeklyApplicationsChart apps={apps} />
+        <WeeklyLocationPieChart apps={apps} />
+      </div>
 
 
     </div>
