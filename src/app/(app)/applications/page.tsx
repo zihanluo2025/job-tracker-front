@@ -46,6 +46,7 @@ export default function ApplicationsPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
     const [editingApp, setEditingApp] = useState<ApplicationItem | null>(null);
+
     const [editOpen, setEditOpen] = useState(false);
 
     const [page, setPage] = useState(1);

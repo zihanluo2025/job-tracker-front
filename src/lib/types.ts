@@ -13,21 +13,18 @@ export type ApplicationStatus =
 
 
 export type Application = {
-  id: number;
-  company: string;
-
-  role: string;
-  status: ApplicationStatus;
-
+  id: string | number;
+  company?: string | null;
+  role?: string | null;
+  status?: ApplicationStatus | string | null;
   source?: string | null;
+  location?: string | null;
   job_url?: string | null;
-  applied_date?: string | null; // ISO string
+  note?: string | null;
   notes_brief?: string | null;
-
-  jd_url?: string | null;
-  jd_text?: string | null;
-  jd_updated_at?: string | null;
-  next_date?: string | null; // ISO string
-
+  applied_date?: string | null;
+  next_date?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 };
 
