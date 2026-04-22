@@ -14,11 +14,14 @@ Unlike traditional CRUD applications, this system adopts a **serverless architec
 
 This project demonstrates my ability to build **production-ready full-stack systems with cloud-native design principles**.
 
----
-<img width="2880" height="1558" alt="image" src="https://github.com/user-attachments/assets/13be15ed-7714-4cd8-a826-a78f2689781c" />
+
+### Dashboard
 <img width="2880" height="1558" alt="image" src="https://github.com/user-attachments/assets/2a7a2a52-d7df-456d-8b81-1d3156c20c4a" />
+### List page
+<img width="2880" height="1558" alt="image" src="https://github.com/user-attachments/assets/13be15ed-7714-4cd8-a826-a78f2689781c" />
 
 
+### Delopy architecture
 <img width="1680" height="1118" alt="image" src="https://github.com/user-attachments/assets/e0394198-9de5-452d-aa12-6db0b6e3b062" />
 
 
@@ -45,7 +48,7 @@ This project demonstrates my ability to build **production-ready full-stack syst
 - Token-based authentication
 
 
----
+
 
 ## Cloud Architecture (AWS)
 
@@ -69,7 +72,6 @@ This project demonstrates my ability to build **production-ready full-stack syst
 or  
 - PostgreSQL (relational)
 
----
 
 ## Tech Stack
 
@@ -93,7 +95,7 @@ or
 ### AI / ML
 - Python-based resume analysis model
 
----
+
 
 ##  Getting Started
 
@@ -105,6 +107,6 @@ cd job-tracker-front
 
 ---
 
-## System Architecture
+
 
 
