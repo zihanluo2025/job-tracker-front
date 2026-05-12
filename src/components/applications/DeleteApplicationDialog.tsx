@@ -62,7 +62,7 @@ export default function DeleteApplicationDialog({ appId, onDeleted }: DeleteAppl
 
                 <AlertDialogFooter>
                     <AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={onDelete} disabled={deleting}>
+                    <AlertDialogAction onClick={onDelete} disabled={deleting} className="bg-red-600 text-white hover:bg-red-700">
                         {deleting ? "Deleting..." : "Delete"}
                     </AlertDialogAction>
                 </AlertDialogFooter>

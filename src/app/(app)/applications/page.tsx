@@ -27,7 +27,6 @@ type ApplicationItem = {
 
 const tabs: { key: ApplicationTabKey; label: string }[] = [
     { key: "ALL", label: "ALL" },
-    { key: "APPLIED", label: "APPLIED" },
     { key: "INTERVIEWING", label: "INTERVIEWING" },
     { key: "CLOSED", label: "CLOSED" },
 ];
@@ -36,7 +35,7 @@ function normalizeStatus(status?: string | null) {
     return (status || "").trim().toUpperCase();
 }
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 5;
 
 export default function ApplicationsPage() {
     const router = useRouter();
@@ -154,14 +153,14 @@ export default function ApplicationsPage() {
                                 }
                             }}
                             placeholder="Search applications, roles, or companies..."
-                            className="h-12 rounded-2xl border border-[#D9E4F2] bg-[#DFF2FF] pl-11 pr-4 text-sm text-slate-700 placeholder:text-slate-400"
+                            className="h-12 rounded-lg border border-[#D9E4F2] bg-[#DFF2FF] pl-11 pr-4 text-sm text-slate-700 placeholder:text-slate-400"
                         />
                     </div>
 
                     <div className="flex items-center gap-3">
                         <button
                             onClick={newApplication}
-                            className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-[#1652C8] px-6 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(22,82,200,0.22)] transition hover:bg-[#1245A8]"
+                            className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#1652C8] px-6 text-sm font-semibold text-white shadow-[0_8px_20px_rgba(22,82,200,0.22)] transition hover:bg-[#1245A8]"
                         >
                             <Plus className="h-4 w-4" />
                             Add New
