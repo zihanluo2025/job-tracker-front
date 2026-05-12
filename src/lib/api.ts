@@ -44,6 +44,37 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   return JSON.parse(text) as T;
 }
 
+
+export type ApplicationStatsSummary = {
+  total: number;
+  thisWeek: number;
+
+  thisMonth: number;
+  lastMonth: number;
+  monthChange: number;
+  monthChangePercent: number;
+  monthTrend: "up" | "down" | "flat";
+
+  rejected: number;
+  phoneScreen: number;
+  onlineInterview: number;
+  inPersonInterview: number;
+  interview: number;
+  offer: number;
+};
+
+export type RecentApplicationPoint = {
+  date: string;
+  count: number;
+};
+
+export type ApplicationStatsResponse = {
+  ok: boolean;
+  summary: ApplicationStatsSummary;
+  byStatus: Record<string, number>;
+  recentApplications: RecentApplicationPoint[];
+};
+
 export type ListApplicationsResponse = {
   ok: boolean;
   items: Application[];
@@ -126,4 +157,9 @@ export const api = {
 
   deleteApplication: (id: string | number) =>
     request<void>(`/applications/${id}`, { method: "DELETE" }),
+
+  getApplicationStats(days = 7) {
+    return request<ApplicationStatsResponse>(`/applications/stats?days=${days}`);
+  } 
 };
+

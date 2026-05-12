@@ -160,7 +160,7 @@ export default function WeeklyLocationPieChart({ apps }: Props) {
     const totalThisWeek = chartData.reduce((sum, item) => sum + item.value, 0);
 
     return (
-        <div className="rounded-3xl border border-[#E6ECF5] bg-white p-6 shadow-[0_6px_18px_rgba(15,23,42,0.05)]">
+        <div className="rounded-lg border border-[#E6ECF5] bg-white p-6 shadow-[0_6px_18px_rgba(15,23,42,0.05)]">
             <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                 <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#94A3B8]">
