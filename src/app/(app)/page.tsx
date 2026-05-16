@@ -231,7 +231,7 @@ function InterviewFunnelCard({
               Screen
             </>
           }
-          value={7}
+          value={8}
           icon={<Phone className="h-5 w-5" />}
           iconClassName="bg-white text-[#0B4EDB]"
         />
