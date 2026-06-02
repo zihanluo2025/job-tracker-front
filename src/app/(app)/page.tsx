@@ -231,14 +231,14 @@ function InterviewFunnelCard({
               Screen
             </>
           }
-          value={8}
+          value={9}
           icon={<Phone className="h-5 w-5" />}
           iconClassName="bg-white text-[#0B4EDB]"
         />
 
         <FunnelStatusItem
           label="Online"
-          value={3}
+          value={4}
           icon={<Video className="h-5 w-5" />}
 
           iconClassName="bg-[#0052D9] text-white"
